@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    activeColor: "",
   },
   mutations: {
   },
   actions: {
   },
   modules: {
+  },
+  getters: {
+    activeColor: state => state.activeColor,
   }
 })
