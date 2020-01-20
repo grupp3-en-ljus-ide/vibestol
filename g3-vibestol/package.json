@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@radial-color-picker/vue-color-picker": "^2.3.0",
+    "axios": "^0.19.1",
     "core-js": "^3.4.4",
     "vue": "^2.6.10",
     "vue-iro-color-picker": "^2.0.0",
