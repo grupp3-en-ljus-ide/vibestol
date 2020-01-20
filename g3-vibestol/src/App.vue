@@ -35,6 +35,9 @@ export default {
     ToolBar,
     ColorPicker
   },
+  created() {
+    this.$store.dispatch("checkIfOccupied");
+  },
   data: () => ({}),
   computed: {
     ...mapGetters(["color", "rgb"])

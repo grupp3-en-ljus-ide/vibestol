@@ -7,13 +7,8 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
 export default {
-  name: "ToolBar",
-  computed: {
-    ...mapGetters(["color", "rgb"])
-  }
+  name: "ToolBar"
 };
 </script>
 
