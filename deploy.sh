@@ -44,6 +44,9 @@ echo
 echo "##############################"
 
 # if you are deploying to https://<USERNAME>.github.io
-git push -f git@github.com:grupp3-en-ljus-ide/vibestol.github.io.git master
+# git push -f git@github.com:grupp3-en-ljus-ide/vibestol.github.io.git master
+
+# if you are deploying to https://<USERNAME>.github.io/<REPO>
+git push -f git@github.com:grupp3-en-ljus-ide/vibestol.github.io.git master:master
 
 cd -
