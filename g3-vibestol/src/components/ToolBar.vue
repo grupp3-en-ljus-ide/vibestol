@@ -1,10 +1,10 @@
 <template>
-  <v-toolbar dense color="primary">
+  <v-toolbar color="primary" height="40">
     <v-spacer />
     <v-toolbar-title>G3 Vibestol</v-toolbar-title>
 
     <v-spacer />
-    <v-toolbar-title>{{this.activeColor}}</v-toolbar-title>
+    <v-toolbar-title>{{color}}</v-toolbar-title>
 
     <v-spacer />
   </v-toolbar>
@@ -16,7 +16,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "ToolBar",
   computed: {
-    ...mapGetters(["activeColor"])
+    ...mapGetters(["color", "rgb"])
   }
 };
 </script>

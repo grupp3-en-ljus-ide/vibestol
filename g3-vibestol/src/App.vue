@@ -1,29 +1,26 @@
 <template>
   <v-app>
     <ToolBar />
-    <v-container>
-      <ColorPickerComp />
-      <HelloWorld />
-    </v-container>
+    <v-col>
+      <v-card class="d-inline-flex pa-2" justify-center elevation="24">
+        <ColorPicker />
+      </v-card>
+    </v-col>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld";
 import ToolBar from "./components/ToolBar";
-import ColorPickerComp from "./components/ColorPickerComp";
+import ColorPicker from "./components/ColorPicker";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
     ToolBar,
-    ColorPickerComp
+    ColorPicker
   },
 
-  data: () => ({
-    //
-  })
+  data: () => ({})
 };
 </script>
