@@ -4,11 +4,6 @@
       <v-card max-width="360" elevation="24">
         <ToolBar />
         <v-container fill-height justify-center>
-          <!-- <v-card-title> -->
-          <!-- G3 Vibestol
-            <v-spacer />
-          {{color}}-->
-          <!-- </v-card-title> -->
           <v-card-subtitle>
             <v-chip color="red">{{rgb.r}}</v-chip>
             <v-chip color="green">{{rgb.g}}</v-chip>
@@ -16,6 +11,7 @@
           </v-card-subtitle>
           <v-card-text>
             <ColorPicker />
+            <v-btn block color="primary" @click="connectMqtt">Ladda upp</v-btn>
           </v-card-text>
         </v-container>
       </v-card>
@@ -27,7 +23,7 @@
 <script>
 import ToolBar from "./components/ToolBar";
 import ColorPicker from "./components/ColorPicker";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "App",
@@ -36,11 +32,15 @@ export default {
     ColorPicker
   },
   created() {
-    this.$store.dispatch("checkIfOccupied");
+    // this.connectMqtt();
+    // this.sendRGB();
   },
   data: () => ({}),
+  methods: {
+    ...mapMutations(["connectMqtt", "sendRGB"])
+  },
   computed: {
-    ...mapGetters(["color", "rgb"])
+    ...mapGetters(["color", "rgb", "hex"])
   }
 };
 </script>
