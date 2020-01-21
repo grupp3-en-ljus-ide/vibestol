@@ -11,7 +11,7 @@ EspMQTTClient client(
   1883,                                     // MQTT broker port
   "g3.vibestol@gmail.com",                  // MQTT username
   "G3Vibestol2020",                         // MQTT password
-  "microdator",                             // Client name
+  "G3Vibestol2022ingenannanhardettanamn",                             // Client name
   onConnectionEstablished,                  // Connection established callback
   true,                                     // Enable web updater
   true                                      // Enable debug messages
@@ -21,27 +21,36 @@ EspMQTTClient client(
 #define GREEN_Led 12 // Output D6 NodeMCU - Green LED
 #define BLUE_Led 13 // Output D7 NodeMCU - Blue LED
 
-string subsriber = "g3.vibestol@gmail.com/vibestol"
+String rSub = "g3.vibestol@gmail.com/R";
+String gSub = "g3.vibestol@gmail.com/G";
+String bSub = "g3.vibestol@gmail.com/B";
 
-void setColor(r_value, g_value, b_value) {
-  analogWrite(RED_Led, r_value);
-  analogWrite(GREEN_Led, g_value);
-  analogWrite(BLUE_Led, b_value);
-}
+int rValue = 0;
+int gValue = 0;
+int bValue = 0;
 
 void onConnectionEstablished() {
-  client.subscribe(subsriber, [] (const String & payload) {
-    Serial.println(payload);
-    setColor(800, 800, 800); //Blinka för att se att den får signal
-    delay(100);
-    setColor(0, 0, 0);
+  client.subscribe(rSub, [] (const String & payload) {
+    rValue = payload.toInt() * 4;
   });
 
-  client.publish(subsriber, "This is a message");
-
-  client.executeDelayed(5 * 1000, []() {
-    client.publish(subsriber, "This is a message sent 5 seconds later");
+  client.subscribe(gSub, [] (const String & payload) {
+    gValue = payload.toInt() * 4;
   });
+
+  client.subscribe(bSub, [] (const String & payload) {
+    bValue = payload.toInt() * 4;
+  });
+
+  setColor(rValue, gValue, bValue);
+
+}
+
+
+void setColor(int r_value, int g_value, int b_value) {
+    analogWrite(RED_Led, r_value);
+    analogWrite(GREEN_Led, g_value);
+    analogWrite(BLUE_Led, b_value);
 }
 
 
@@ -50,9 +59,10 @@ void setup() {
   pinMode(GREEN_Led, OUTPUT);
   pinMode(BLUE_Led, OUTPUT);
   setColor(0, 0, 0);
-  Serial.begin(115200);
+ // Serial.begin(115200);
 }
 
 void loop() {
   client.loop();
+  onConnectionEstablished();
 }
