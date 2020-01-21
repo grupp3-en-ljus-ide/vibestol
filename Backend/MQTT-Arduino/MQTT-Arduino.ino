@@ -9,8 +9,8 @@ EspMQTTClient client(
   "Welcome2abb",                            // Wifi password
   "maqiatto.com",                           // MQTT broker ip
   1883,                                     // MQTT broker port
-  "samuel.staflin@abbindustrigymnasium.se", // MQTT username
-  "leumas",                                 // MQTT password
+  "g3.vibestol@gmail.com",                  // MQTT username
+  "G3Vibestol2020",                         // MQTT password
   "microdator",                             // Client name
   onConnectionEstablished,                  // Connection established callback
   true,                                     // Enable web updater
@@ -21,7 +21,7 @@ EspMQTTClient client(
 #define GREEN_Led 12 // Output D6 NodeMCU - Green LED
 #define BLUE_Led 13 // Output D7 NodeMCU - Blue LED
 
-string subsriber = "jonathan.damsgaardfalck@abbindustrigymnasium.se/vibestol"
+string subsriber = "g3.vibestol@gmail.com/vibestol"
 
 void setColor(r_value, g_value, b_value) {
   analogWrite(RED_Led, r_value);
