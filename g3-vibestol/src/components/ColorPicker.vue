@@ -1,10 +1,16 @@
 <template>
   <div>
     <v-col cols="12">
-      <color-picker dark v-bind="color" @input="updateColor"></color-picker>
+      <color-picker dark v-bind="color" @input="updateColorH"></color-picker>
     </v-col>
     <v-col cols="12">
-      <v-slider v-model="color.luminosity" min="0" max="100" label="Ljusstyrka"></v-slider>
+      <v-slider
+        v-model="color.luminosity"
+        @change="updateColorL"
+        min="0"
+        max="100"
+        label="Ljusstyrka"
+      ></v-slider>
     </v-col>
   </div>
 </template>
@@ -17,7 +23,7 @@ export default {
   components: { ColorPicker },
   data: () => ({}),
   methods: {
-    ...mapMutations(["updateColor"])
+    ...mapMutations(["updateColorH", "updateColorL"])
   },
   computed: {
     ...mapGetters(["color", "rgb"])

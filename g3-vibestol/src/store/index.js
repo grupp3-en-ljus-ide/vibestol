@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+import mqtt from "mqtt";
 
 Vue.use(Vuex)
 
@@ -12,14 +13,61 @@ export default new Vuex.Store({
       luminosity: 50
     },
     rgb: {
-      r: 0,
-      g: 0,
-      b: 0
+      r: 69,
+      g: 69,
+      b: 69
     },
-    hex: "primary"
+    hex: "primary",
+    mqtt: {
+      connected: false,
+      client: "hemsidan",
+      url: "mqtt://maqiatto.com",
+      options: {
+        port: 8883,
+        clientId:
+          "mqttjs_" +
+          Math.random()
+            .toString(16)
+            .substr(2, 8),
+        username: "g3.vibestol@gmail.com",
+        password: "G3Vibestol2020",
+      }
+    }
   },
   mutations: {
-    updateColor(state, h) {
+    sendRGB(state) {
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r);
+      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g);
+      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b);
+      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
+    },
+    connectMqtt(state) {
+      if (!state.mqtt.connected) {
+        console.log("connecting");
+        state.mqtt.client = mqtt.connect(state.mqtt.url, state.mqtt.options);
+        console.log("connected?");
+        state.mqtt.client
+          .on("error", function (error) {
+            console.log("Error...");
+            state.mqtt.connected = false;
+            console.log(state.mqtt.connected, error);
+          })
+          .on("close", function (error) {
+            console.log("Closed... Disconnected", error);
+            state.mqtt.connected = false;
+          });
+      }
+      state.mqtt.connected = true;
+
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r.toString());
+      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g.toString());
+      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b.toString());
+      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
+    },
+    updateColorL(state, l) {
+      state.color.luminosity = l
+    },
+    updateColorH(state, h) {
       state.color.hue = h
       var s = state.color.saturation
       var l = state.color.luminosity
@@ -64,6 +112,28 @@ export default new Vuex.Store({
 
       state.hex = "#" + r + g + b;
 
+      if (!state.mqtt.connected) {
+        console.log("connecting");
+        state.mqtt.client = mqtt.connect(state.mqtt.url, state.mqtt.options);
+        console.log("connected?");
+        state.mqtt.client
+          .on("error", function (error) {
+            console.log("Error...");
+            state.mqtt.connected = false;
+            console.log(state.mqtt.connected, error);
+          })
+          .on("close", function (error) {
+            console.log("Closed... Disconnected", error);
+            state.mqtt.connected = false;
+          });
+      }
+      state.mqtt.connected = true;
+
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r.toString());
+      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g.toString());
+      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b.toString());
+      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
+
     }
   },
   actions: {
@@ -82,16 +152,7 @@ export default new Vuex.Store({
             resolve(respone);
           })
       })
-    }
-
-    // async fetch() {
-    //   let green = false;
-    //   const { data } = await axios.get(
-    //     "https://03asg5lb76.execute-api.us-east-1.amazonaws.com/V1/stol?stol=VibeChair"
-    //   );
-
-    // }
-    // },
+    },
   },
   modules: {
   },
