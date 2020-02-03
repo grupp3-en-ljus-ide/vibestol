@@ -64,11 +64,9 @@ export default new Vuex.Store({
       state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b.toString());
       console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
     },
-    updateColorL(state, l) {
-      state.color.luminosity = l
-    },
-    updateColorH(state, h) {
-      state.color.hue = h
+    publishRGB(state) {
+
+      var h = state.color.hue
       var s = state.color.saturation
       var l = state.color.luminosity
 

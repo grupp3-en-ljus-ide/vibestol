@@ -11,7 +11,7 @@
           </v-card-subtitle>
           <v-card-text>
             <ColorPicker />
-            <v-btn block color="primary" @click="connectMqtt">Ladda upp</v-btn>
+            <!-- <v-btn block color="primary" @click="connectMqtt">Ladda upp</v-btn> -->
           </v-card-text>
         </v-container>
       </v-card>
