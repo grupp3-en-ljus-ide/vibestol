@@ -8,6 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lampOn: true,
+    currentEffect: "Static",
+    effects: ["Static", "Rainbow", "Wave"],
     color: {
       hue: 50,
       saturation: 100,
@@ -195,5 +197,6 @@ export default new Vuex.Store({
     hex: state => state.hex,
     closed: state => state.closed,
     lampOn: state => state.lampOn,
+    effects: state => state.effects,
   }
 })
