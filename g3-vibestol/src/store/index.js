@@ -25,11 +25,10 @@ export default new Vuex.Store({
       url: "mqtt://maqiatto.com",
       options: {
         port: 8883,
-        clientId:
-          "mqttjs_" +
+        clientId: "mqttjs_" +
           Math.random()
-            .toString(16)
-            .substr(2, 8),
+          .toString(16)
+          .substr(2, 8),
         username: "g3.vibestol@gmail.com",
         password: "G3Vibestol2020",
       }
@@ -43,9 +42,9 @@ export default new Vuex.Store({
       state.color.hue = lum;
     },
     HslToRgb(state) {
-      var   h = state.color.hue
-      var   s = state.color.saturation
-      var   l = state.color.luminosity
+      var h = state.color.hue
+      var s = state.color.saturation
+      var l = state.color.luminosity
 
       s /= 100;
       l /= 100;
@@ -58,21 +57,34 @@ export default new Vuex.Store({
         b = 0;
 
       if (0 <= h && h < 60) {
-        r = c; g = x; b = 0;
+        r = c;
+        g = x;
+        b = 0;
       } else if (60 <= h && h < 120) {
-        r = x; g = c; b = 0;
+        r = x;
+        g = c;
+        b = 0;
       } else if (120 <= h && h < 180) {
-        r = 0; g = c; b = x;
+        r = 0;
+        g = c;
+        b = x;
       } else if (180 <= h && h < 240) {
-        r = 0; g = x; b = c;
+        r = 0;
+        g = x;
+        b = c;
       } else if (240 <= h && h < 300) {
-        r = x; g = 0; b = c;
+        r = x;
+        g = 0;
+        b = c;
       } else if (300 <= h && h < 360) {
-        r = c; g = 0; b = x;
+        r = c;
+        g = 0;
+        b = x;
       }
       state.rgb.r = Math.round((r + m) * 255);
       state.rgb.g = Math.round((g + m) * 255);
       state.rgb.b = Math.round((b + m) * 255);
+
     },
     RgbToHex(state) {
       var r = state.rgb.r.toString(16);
@@ -87,6 +99,23 @@ export default new Vuex.Store({
         b = "0" + b;
 
       state.hex = "#" + r + g + b;
+    },
+    RgbToString(state) {
+
+      const keys = Object.keys(state.rgb)
+      var x = "";
+
+      for (x in keys) {
+        if (state.rgb[keys[x]] == 0) {
+          state.rgb[keys[x]] = "000"
+        } else if (0 < state.rgb[keys[x]] && state.rgb[keys[x]] <= 9) {
+          state.rgb[keys[x]] = "00" + state.rgb[keys[x]]
+        } else if (10 <= state.rgb[keys[x]] && state.rgb[keys[x]] <= 99) {
+          state.rgb[keys[x]] = "0" + state.rgb[keys[x]]
+        } else {
+          state.rgb[keys[x]] = "" + state.rgb[keys[x]]
+        }
+      }
     },
     publishToMqtt(state, rgb) {
       if (!state.mqtt.connected) {
@@ -106,30 +135,57 @@ export default new Vuex.Store({
       }
       state.mqtt.connected = true;
 
-      // state.mqtt.client.publish("g3.vibestol@gmail.com/R", r.toString());
-      // state.mqtt.client.publish("g3.vibestol@gmail.com/G", g.toString());
-      // state.mqtt.client.publish("g3.vibestol@gmail.com/B", b.toString());
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b);
       console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b)
     }
   },
   actions: {
-    atUpdateHue: ({ commit, state }, hue) => {
+    atUpdateHue: ({
+      commit,
+      state
+    }, hue) => {
       commit("updateHue", hue)
       commit("HslToRgb");
       commit("RgbToHex");
-      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
+      commit("RgbToString");
+      commit("publishToMqtt", {
+        r: state.rgb.r,
+        g: state.rgb.g,
+        b: state.rgb.b
+      });
     },
-    atUpdateLum: ({ commit, state }, lum) => {
+    atUpdateLum: ({
+      commit,
+      state
+    }, lum) => {
       commit("updateLum", lum)
       commit("HslToRgb");
       commit("RgbToHex");
-      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
+      commit("RgbToString");
+      commit("publishToMqtt", {
+        r: state.rgb.r,
+        g: state.rgb.g,
+        b: state.rgb.b
+      });
     },
-    turnOn: ({ commit, state }) => {
-      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
+    turnOn: ({
+      commit,
+      state
+    }) => {
+      commit("publishToMqtt", {
+        r: state.rgb.r,
+        g: state.rgb.g,
+        b: state.rgb.b
+      });
     },
-    turnOff: ({ commit }) => {
-      commit("publishToMqtt", {r: 0, g: 0, b: 0})
+    turnOff: ({
+      commit
+    }) => {
+      commit("publishToMqtt", {
+        r: "000",
+        g: "000",
+        b: "000"
+      })
     }
   },
   modules: {},
