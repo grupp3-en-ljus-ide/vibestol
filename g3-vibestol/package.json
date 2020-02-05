@@ -11,14 +11,17 @@
     "@radial-color-picker/vue-color-picker": "^2.3.0",
     "axios": "^0.19.1",
     "core-js": "^3.4.4",
+    "material-design-icons-iconfont": "^5.0.1",
     "mqtt": "^3.0.0",
     "vue": "^2.6.10",
     "vue-iro-color-picker": "^2.0.0",
+    "vue-material-design-icons": "^4.4.0",
     "vue-mqtt": "^2.0.3",
     "vuetify": "^2.1.0",
     "vuex": "^3.1.2"
   },
   "devDependencies": {
+    "@mdi/font": "^4.8.95",
     "@vue/cli-plugin-babel": "^4.1.0",
     "@vue/cli-plugin-eslint": "^4.1.0",
     "@vue/cli-plugin-vuex": "^4.1.2",

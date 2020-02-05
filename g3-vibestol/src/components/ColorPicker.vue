@@ -1,12 +1,12 @@
 <template>
   <div>
     <v-col cols="12">
-      <color-picker dark v-bind="color" @input="atUpdateHue"></color-picker>
+      <color-picker dark v-bind="color" @input="updateHue"></color-picker>
     </v-col>
     <v-col cols="12">
       <v-slider
         v-model="color.luminosity"
-        @change="atUpdateLum"
+        @change="updateLum"
         min="0"
         max="100"
         label="Ljusstyrka"
@@ -17,24 +17,22 @@
 
 <script>
 import ColorPicker from "@radial-color-picker/vue-color-picker";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: { ColorPicker },
   data: () => ({}),
   methods: {
-    ...mapMutations(["publishRGB"]),
-    atUpdateHue(h) {
-      this.$store.state.color.hue = h;
-      this.publishRGB();
+     
+    updateHue(hue) {
+      this.$store.dispatch('atUpdateHue', hue)
     },
-    atUpdateLum(l) {
-      this.$store.state.color.luminosity = l;
-      this.publishRGB();
+    updateLum(lum) {
+       this.$store.dispatch('atUpdateLum', lum)
     }
   },
   computed: {
-    ...mapGetters(["color", "rgb"])
+    ...mapGetters(["color", "colorActive"])
   }
 };
 </script>

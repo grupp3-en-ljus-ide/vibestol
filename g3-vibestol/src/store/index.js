@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from "axios";
+// import axios from "axios";
 import mqtt from "mqtt";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    lampOn: true,
     color: {
       hue: 50,
       saturation: 100,
@@ -17,7 +18,7 @@ export default new Vuex.Store({
       g: 69,
       b: 69
     },
-    hex: "primary",
+    hex: "#ffffff",
     mqtt: {
       connected: false,
       client: "hemsidan",
@@ -35,40 +36,16 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    sendRGB(state) {
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r);
-      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g);
-      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b);
-      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
+    updateHue(state, hue) {
+      state.color.hue = hue;
     },
-    connectMqtt(state) {
-      if (!state.mqtt.connected) {
-        console.log("connecting");
-        state.mqtt.client = mqtt.connect(state.mqtt.url, state.mqtt.options);
-        console.log("connected?");
-        state.mqtt.client
-          .on("error", function (error) {
-            console.log("Error...");
-            state.mqtt.connected = false;
-            console.log(state.mqtt.connected, error);
-          })
-          .on("close", function (error) {
-            console.log("Closed... Disconnected", error);
-            state.mqtt.connected = false;
-          });
-      }
-      state.mqtt.connected = true;
-
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b.toString());
-      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
+    updateLum(state, lum) {
+      state.color.hue = lum;
     },
-    publishRGB(state) {
-
-      var h = state.color.hue
-      var s = state.color.saturation
-      var l = state.color.luminosity
+    HslToRgb(state) {
+      var   h = state.color.hue
+      var   s = state.color.saturation
+      var   l = state.color.luminosity
 
       s /= 100;
       l /= 100;
@@ -96,10 +73,11 @@ export default new Vuex.Store({
       state.rgb.r = Math.round((r + m) * 255);
       state.rgb.g = Math.round((g + m) * 255);
       state.rgb.b = Math.round((b + m) * 255);
-
-      r = state.rgb.r.toString(16);
-      g = state.rgb.g.toString(16);
-      b = state.rgb.b.toString(16);
+    },
+    RgbToHex(state) {
+      var r = state.rgb.r.toString(16);
+      var g = state.rgb.g.toString(16);
+      var b = state.rgb.b.toString(16);
 
       if (r.length == 1)
         r = "0" + r;
@@ -109,7 +87,8 @@ export default new Vuex.Store({
         b = "0" + b;
 
       state.hex = "#" + r + g + b;
-
+    },
+    publishToMqtt(state, rgb) {
       if (!state.mqtt.connected) {
         console.log("connecting");
         state.mqtt.client = mqtt.connect(state.mqtt.url, state.mqtt.options);
@@ -127,36 +106,38 @@ export default new Vuex.Store({
       }
       state.mqtt.connected = true;
 
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", state.rgb.r.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/G", state.rgb.g.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/B", state.rgb.b.toString());
-      console.log("R:", state.rgb.r, "G:", state.rgb.g, "B:", state.rgb.b)
-
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/R", r.toString());
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/G", g.toString());
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/B", b.toString());
+      console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b)
     }
   },
   actions: {
-    checkIfOccupied: () => {
-      return new Promise(resolve => {
-        axios
-          .get("https://03asg5lb76.execute-api.us-east-1.amazonaws.com/V1/stol?stol=VibeChair")
-          .then(respone => {
-            let green = false;
-            if (respone.Status == "Grön") {
-              green = true;
-            } else {
-              green = false;
-            }
-            console.log(green);
-            resolve(respone);
-          })
-      })
+    atUpdateHue: ({ commit, state }, hue) => {
+      commit("updateHue", hue)
+      commit("HslToRgb");
+      commit("RgbToHex");
+      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
     },
+    atUpdateLum: ({ commit, state }, lum) => {
+      commit("updateLum", lum)
+      commit("HslToRgb");
+      commit("RgbToHex");
+      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
+    },
+    turnOn: ({ commit, state }) => {
+      commit("publishToMqtt", {r: state.rgb.r, g: state.rgb.g, b: state.rgb.b});
+    },
+    turnOff: ({ commit }) => {
+      commit("publishToMqtt", {r: 0, g: 0, b: 0})
+    }
   },
-  modules: {
-  },
+  modules: {},
   getters: {
     color: state => state.color,
     rgb: state => state.rgb,
     hex: state => state.hex,
+    closed: state => state.closed,
+    lampOn: state => state.lampOn,
   }
 })

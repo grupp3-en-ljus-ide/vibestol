@@ -7,8 +7,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  name: "ToolBar"
+  name: "ToolBar",
+  computed: {
+    ...mapGetters(["hex", "rgb"])
+  }
 };
 </script>
 

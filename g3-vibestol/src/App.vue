@@ -9,9 +9,14 @@
             <v-chip color="green">{{rgb.g}}</v-chip>
             <v-chip color="blue">{{rgb.b}}</v-chip>
           </v-card-subtitle>
+          <v-card-subtitle>
+            <v-btn color="secondary" fab @click="this.switch">
+              <v-icon v-if="lampOn">mdi-lightbulb-on</v-icon>
+              <v-icon v-if="!lampOn">mdi-lightbulb-off</v-icon>
+            </v-btn>
+          </v-card-subtitle>
           <v-card-text>
             <ColorPicker />
-            <!-- <v-btn block color="primary" @click="connectMqtt">Ladda upp</v-btn> -->
           </v-card-text>
         </v-container>
       </v-card>
@@ -23,7 +28,7 @@
 <script>
 import ToolBar from "./components/ToolBar";
 import ColorPicker from "./components/ColorPicker";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters  } from "vuex";
 
 export default {
   name: "App",
@@ -31,16 +36,24 @@ export default {
     ToolBar,
     ColorPicker
   },
-  created() {
-    // this.connectMqtt();
-    // this.sendRGB();
-  },
   data: () => ({}),
   methods: {
-    ...mapMutations(["connectMqtt", "sendRGB"])
+
+    switch() {
+      if(!this.lampOn){
+        this.$store.dispatch('turnOff')
+        this.$store.state.lampOn = true
+      }
+      else {
+        this.$store.dispatch('turnOn')
+        this.$store.state.lampOn = false
+      }
+      
+      console.log(this.lampOn)
+    }
   },
   computed: {
-    ...mapGetters(["color", "rgb", "hex"])
+    ...mapGetters([ "rgb", "lampOn"])
   }
 };
 </script>
