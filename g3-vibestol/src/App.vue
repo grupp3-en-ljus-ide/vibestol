@@ -41,11 +41,11 @@ export default {
 
     switch() {
       if(!this.lampOn){
-        this.$store.dispatch('turnOff')
+        this.$store.dispatch('turnOn')
         this.$store.state.lampOn = true
       }
       else {
-        this.$store.dispatch('turnOn')
+        this.$store.dispatch('turnOff')
         this.$store.state.lampOn = false
       }
       
