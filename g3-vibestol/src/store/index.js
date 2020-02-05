@@ -8,8 +8,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lampOn: true,
-    currentEffect: "Static",
-    effects: ["Static", "Rainbow", "Wave"],
     color: {
       hue: 50,
       saturation: 100,
@@ -108,9 +106,9 @@ export default new Vuex.Store({
       }
       state.mqtt.connected = true;
 
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/G", rgb.g.toString());
-      state.mqtt.client.publish("g3.vibestol@gmail.com/B", rgb.b.toString());
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/R", r.toString());
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/G", g.toString());
+      // state.mqtt.client.publish("g3.vibestol@gmail.com/B", b.toString());
       console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b)
     }
   },
@@ -141,6 +139,5 @@ export default new Vuex.Store({
     hex: state => state.hex,
     closed: state => state.closed,
     lampOn: state => state.lampOn,
-    effects: state => state.effects,
   }
 })

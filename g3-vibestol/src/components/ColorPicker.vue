@@ -1,10 +1,7 @@
 <template>
   <div>
-    <v-col cols="12" >
-      <v-content elevation="12">  
-          <color-picker  dark v-bind="color" variant="persistent" :disable="!lampOn" @input="updateHue"></color-picker>
-  
-         </v-content>
+    <v-col cols="12">
+      <color-picker dark v-bind="color" @input="updateHue"></color-picker>
     </v-col>
     <v-col cols="12">
       <v-slider
@@ -35,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["color", "lampOn"])
+    ...mapGetters(["color", "colorActive"])
   }
 };
 </script>
