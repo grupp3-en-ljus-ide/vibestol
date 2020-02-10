@@ -16,9 +16,9 @@ export default new Vuex.Store({
       luminosity: 50
     },
     rgb: {
-      r: 69,
-      g: 69,
-      b: 69
+      r: 255,
+      g: 255,
+      b: 255
     },
     hex: "#ffffff",
     mqtt: {
