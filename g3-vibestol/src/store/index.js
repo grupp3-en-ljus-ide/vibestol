@@ -8,8 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     lampOn: true,
-    currentEffect: "Static",
-    effects: ["Static", "Rainbow", "Wave"],
+    currentEffect: "Statiskt läge",
+    effects: ["Statiskt läge", "Regnbåges läge"],
     color: {
       hue: 50,
       saturation: 100,
@@ -29,8 +29,8 @@ export default new Vuex.Store({
         port: 8883,
         clientId: "mqttjs_" +
           Math.random()
-          .toString(16)
-          .substr(2, 8),
+            .toString(16)
+            .substr(2, 8),
         username: "g3.vibestol@gmail.com",
         password: "G3Vibestol2020",
       }
@@ -137,8 +137,17 @@ export default new Vuex.Store({
       }
       state.mqtt.connected = true;
 
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b);
-      console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b)
+      let publishEffect = "0"
+      if (state.currentEffect == state.effects[0]) {
+        publishEffect = "1"
+      }
+      else if (state.currentEffect == state.effects[1]) {
+        publishEffect = "2"
+      }
+
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b + publishEffect);
+      console.log("MQTT PUBLISHED: ", rgb.r + rgb.g + rgb.b + publishEffect)
+      console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b, "Effect:", publishEffect)
     }
   },
   actions: {
@@ -198,5 +207,6 @@ export default new Vuex.Store({
     closed: state => state.closed,
     lampOn: state => state.lampOn,
     effects: state => state.effects,
+    currentEffect: state => state.currentEffect,
   }
 })

@@ -1,16 +1,10 @@
 <template>
   <div>
     <v-col cols="12">
-      <color-picker dark v-bind="color" @input="updateHue"></color-picker>
+      <color-picker dark :disabled="currentEffect != effects[0]" v-bind="color" @input="updateHue"></color-picker>
     </v-col>
     <v-col cols="12">
-      <v-slider
-        v-model="color.luminosity"
-        @change="updateLum"
-        min="0"
-        max="100"
-        label="Ljusstyrka"
-      ></v-slider>
+      <v-slider v-model="color.luminosity" @change="updateLum" min="0" max="100" label="Ljusstyrka"></v-slider>
     </v-col>
   </div>
 </template>
@@ -23,16 +17,15 @@ export default {
   components: { ColorPicker },
   data: () => ({}),
   methods: {
-     
     updateHue(hue) {
-      this.$store.dispatch('atUpdateHue', hue)
+      this.$store.dispatch("atUpdateHue", hue);
     },
     updateLum(lum) {
-       this.$store.dispatch('atUpdateLum', lum)
+      this.$store.dispatch("atUpdateLum", lum);
     }
   },
   computed: {
-    ...mapGetters(["color", "colorActive"])
+    ...mapGetters(["color", "colorActive", "effects", "currentEffect"])
   }
 };
 </script>
