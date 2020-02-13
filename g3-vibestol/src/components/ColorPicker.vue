@@ -1,7 +1,13 @@
 <template>
   <div>
     <v-col cols="12">
-      <color-picker dark :disabled="currentEffect != effects[0]" v-bind="color" @input="updateHue"></color-picker>
+      <color-picker
+        dark
+        :disabled="currentEffect != effects[0]"
+        variant="persistent"
+        v-bind="color"
+        @input="updateHue"
+      ></color-picker>
     </v-col>
     <v-col cols="12">
       <v-slider v-model="color.luminosity" @change="updateLum" min="0" max="100" label="Ljusstyrka"></v-slider>
