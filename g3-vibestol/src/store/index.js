@@ -41,7 +41,7 @@ export default new Vuex.Store({
       state.color.hue = hue;
     },
     updateLum(state, lum) {
-      state.color.hue = lum;
+      state.color.lum = lum;
     },
     HslToRgb(state) {
       var h = state.color.hue
