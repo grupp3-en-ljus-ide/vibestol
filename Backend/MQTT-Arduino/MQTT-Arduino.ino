@@ -54,6 +54,7 @@ void onConnectionEstablished() {
   else {
     Serial.println("Unknown effect");
   }
+  effectValue = 0;
 }
 
 
@@ -83,22 +84,28 @@ void loop() {
       break;
     case RainbowEffect:
       if (rValue >= 1000 and gValue < 1000 and bValue == 0) {
-        gValue += 100;
+        Serial.println("g+");
+        gValue += 10;
       }
       else if(rValue > 0 and gValue >= 1000 and bValue == 0) {
-        rValue -= 100;
+        Serial.println("r-");
+        rValue -= 10;
       }
       else if (rValue == 0 and gValue >= 1000 and bValue < 1000) {
-        bValue += 100;
+        Serial.println("b+");
+        bValue += 10;
       }
       else if(rValue == 0 and gValue > 0 and bValue >= 1000) {
-        gValue -= 100;
+        Serial.println("g-");
+        gValue -= 10;
       }
       else if (rValue < 1000 and gValue == 0 and bValue >= 1000) {
-        rValue += 100;
+        Serial.println("r+");
+        rValue += 10;
       }
       else if(rValue >= 1000 and gValue == 0 and bValue > 0) {
-        bValue -= 100;
+        Serial.println("b-");
+        bValue -= 10;
       }
       else {
         Serial.println("Rainbow effect error");
