@@ -138,10 +138,10 @@ export default new Vuex.Store({
       state.mqtt.connected = true;
 
       let publishEffect = "0" //Sets the effect number based on user input
-      if (state.currentEffect == state.effects[0]) { 
+      if (state.currentEffect == state.effects[0]) { //1st effect
         publishEffect = "1"
       }
-      else if (state.currentEffect == state.effects[1]) {
+      else if (state.currentEffect == state.effects[1]) { //2nd effect
         publishEffect = "2"
       }
 
