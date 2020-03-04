@@ -145,7 +145,7 @@ export default new Vuex.Store({
         publishEffect = "2"
       }
 
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b + publishEffect); //Adds r,b,g and effect number into 1 string
+      state.mqtt.client.publish("g3.vibestol@gmail.com/vibe", rgb.r + rgb.g + rgb.b + publishEffect); //Adds r,b,g and effect number into 1 string
     }
   },
   actions: {

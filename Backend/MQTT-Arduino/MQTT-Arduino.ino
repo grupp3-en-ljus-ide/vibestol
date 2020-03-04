@@ -27,7 +27,7 @@ typedef enum Effects{
 };
 Effects Effect;
 
-String Sub = "g3.vibestol@gmail.com/R";
+String Sub = "g3.vibestol@gmail.com/vibe";
 
 int rValue = 0;
 int gValue = 0;
