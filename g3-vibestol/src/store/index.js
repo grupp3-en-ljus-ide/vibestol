@@ -102,13 +102,13 @@ export default new Vuex.Store({
 
       state.hex = "#" + r + g + b;
     },
-    RgbToString(state) {
+    RgbToString(state) { 
 
-      const keys = Object.keys(state.rgb)
+      const keys = Object.keys(state.rgb) //Each key in rgb (r,g,b)
       var x = "";
 
-      for (x in keys) {
-        if (state.rgb[keys[x]] == 0) {
+      for (x in keys) {  //Goes through r,g and b and change it into a 3 number long string and adds zeros if needed
+        if (state.rgb[keys[x]] == 0) { 
           state.rgb[keys[x]] = "000"
         } else if (0 < state.rgb[keys[x]] && state.rgb[keys[x]] <= 9) {
           state.rgb[keys[x]] = "00" + state.rgb[keys[x]]
@@ -120,7 +120,7 @@ export default new Vuex.Store({
       }
     },
     publishToMqtt(state, rgb) {
-      if (!state.mqtt.connected) {
+      if (!state.mqtt.connected) { //Connects to MaQiaTTo online broker
         console.log("connecting");
         state.mqtt.client = mqtt.connect(state.mqtt.url, state.mqtt.options);
         console.log("connected?");
@@ -137,17 +137,15 @@ export default new Vuex.Store({
       }
       state.mqtt.connected = true;
 
-      let publishEffect = "0"
-      if (state.currentEffect == state.effects[0]) {
+      let publishEffect = "0" //Sets the effect number based on user input
+      if (state.currentEffect == state.effects[0]) { 
         publishEffect = "1"
       }
       else if (state.currentEffect == state.effects[1]) {
         publishEffect = "2"
       }
 
-      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b + publishEffect);
-      console.log("MQTT PUBLISHED: ", rgb.r + rgb.g + rgb.b + publishEffect)
-      console.log("R:", rgb.r, "G:", rgb.g, "B:", rgb.b, "Effect:", publishEffect)
+      state.mqtt.client.publish("g3.vibestol@gmail.com/R", rgb.r + rgb.g + rgb.b + publishEffect); //Adds r,b,g and effect number into 1 string
     }
   },
   actions: {
