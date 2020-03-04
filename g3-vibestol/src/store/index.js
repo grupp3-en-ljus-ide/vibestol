@@ -43,7 +43,7 @@ export default new Vuex.Store({
     updateLum(state, lum) {
       state.color.lum = lum;
     },
-    HslToRgb(state) {
+    HslToRgb(state) { //Function that converts hsl values to rgb values
       var h = state.color.hue
       var s = state.color.saturation
       var l = state.color.luminosity
@@ -88,7 +88,7 @@ export default new Vuex.Store({
       state.rgb.b = Math.round((b + m) * 255);
 
     },
-    RgbToHex(state) {
+    RgbToHex(state) { //Function that converts hex values to rgb values
       var r = state.rgb.r.toString(16);
       var g = state.rgb.g.toString(16);
       var b = state.rgb.b.toString(16);
