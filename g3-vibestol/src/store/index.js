@@ -23,7 +23,7 @@ export default new Vuex.Store({
     hex: "#ffffff",
     mqtt: {
       connected: false,
-      client: "hemsidan",
+      client: "motorhemsidan",
       url: "mqtt://maqiatto.com",
       options: {
         port: 8883,
